@@ -1,0 +1,13 @@
+# this file is generated via https://github.com/mariadb-corporation/mariadb-docker-images//generate-stackbrew-library.sh
+
+Maintainers: Tianon Gravi <admwiggin@gmail.com> (@tianon),
+             Joseph Ferguson <yosifkit@gmail.com> (@yosifkit)
+GitRepo: https://github.com/mariadb-corporation/mariadb-docker-images.git
+
+Tags: columnstore_jupyter
+GitCommit: 6774592ce7c60fe6d026ffa9b59ac9b20ef46ab0
+Directory: columnstore_jupyter
+
+Tags: columnstore
+GitCommit: 13b238369782ee903435d2c0c33b7dd463714489
+Directory: columnstore
