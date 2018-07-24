@@ -1,0 +1,9 @@
+# this file is generated via https://github.com/mariadb-corporation/mariadb-docker-images//generate-stackbrew-library.sh
+
+Maintainers: Tianon Gravi <admwiggin@gmail.com> (@tianon),
+             Joseph Ferguson <yosifkit@gmail.com> (@yosifkit)
+GitRepo: https://github.com/mariadb-corporation/mariadb-docker-images.git
+
+Tags: maxscale
+GitCommit: 7229508d5e46d83496fea22c9610c6b314829461
+Directory: maxscale
