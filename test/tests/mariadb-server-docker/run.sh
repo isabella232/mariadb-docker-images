@@ -17,7 +17,6 @@ if ! $testOutput; then
 	echo >&2 'Mysqld is not running: $testOutput'
 	exit
 fi
-echo >&2 'Mysqld is as pid $testOutput'
 [ "$testOutput" = "1" ]
 
 # query test
