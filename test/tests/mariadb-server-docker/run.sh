@@ -11,11 +11,13 @@ get_mysqld_pid="ps waux|  grep mysqld| grep -v grep| awk '{print $2}'"
 # simple test which should return nothing
 mysql_check='mysql -u root -p$MYSQL_ROOT_PASSWORD mysql -e "select * from host;"'
 
+testOutput="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" "$image" "$get_mysqld_pid" 2>/dev/null)"
 # test that mysqld is running
-if ! testOutput="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" "$image" "$get_mysqld_pid" 2>/dev/null)"; then
-	echo >&2 'Mysqld is not running'
+if ! $testOutput; then
+	echo >&2 'Mysqld is not running: $testOutput'
 	exit
 fi
+echo >&2 'Mysqld is as pid $testOutput'
 [ "$testOutput" = "1" ]
 
 # query test
