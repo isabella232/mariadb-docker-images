@@ -13,5 +13,5 @@ fi
 [ "$testOutput" = "Mysql is installed" ]
 
 # test run	
-output="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" "$image" docker-entrypoint.sh)"
+output="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" "$image" bash "docker-entrypoint.sh")"
 [ "$output" = "Mysqld is running" ]
