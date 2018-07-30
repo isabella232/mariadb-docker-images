@@ -107,6 +107,12 @@ imageTests+=(
 	[logstash]='
 		logstash-basics
 	'
+	[mariadb-server-docker]='
+		mariadb-server-docker
+		mysql-basics
+		mysql-initdb
+		mysql-log-bin
+	'
 	[memcached]='
 		memcached-basics
 	'
