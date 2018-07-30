@@ -3,7 +3,7 @@ set -eo pipefail
 
 image="$1"
 
-export MYSQL_ROOT_PASSWORD="IamGr00t!"
+export MYSQL_ROOT_PASSWORD="r00t_passw0rd"
 
 # verify mysql client is installed
 if ! testOutput="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" --entrypoint mysql "$image" "--version" 2>/dev/null)"; then
@@ -11,7 +11,3 @@ if ! testOutput="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD"
 	exit
 fi
 [ "$testOutput" = "Mysql is installed" ]
-
-# test run	
-output="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" "$image" bash "docker-entrypoint.sh")"
-[ "$output" = "Mysqld is running" ]
