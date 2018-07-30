@@ -16,5 +16,5 @@ fi
 [ "$testOutput" = "Mysqld is running" ]
 
 # query test
-output="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" "$image" "$mysql_check")"
+output="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" "$image" "mysql --version")"
 [ "$output" = "Mysql query successful" ]
