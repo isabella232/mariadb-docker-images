@@ -14,11 +14,16 @@ mysql_check='mysql -u root -p$MYSQL_ROOT_PASSWORD mysql -e "select * from host;"
 testOutput="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" "$image" "$get_mysqld_pid" 2>/dev/null)"
 # test that mysqld is running
 if ! $testOutput; then
-	echo >&2 'Mysqld is not running: $testOutput'
+	echo >&2 'Mysqld not running. $get_mysqld_pid returned $testOutput'
 	exit
 fi
 [ "$testOutput" = "1" ]
 
 # query test
 output="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" "$image" "$mysql_check")"
+if ! output; then
+	echo >&2 'Mysqld query error. $mysql_check returned $output'
+	exit
+fi
+echo "Passed"
 [ "$output" = "" ]
