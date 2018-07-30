@@ -13,5 +13,5 @@ export MYSQL_ROOT_PASSWORD="IamGr00t!"
 # [ "$testOutput" = "Mysql is installed" ]
 
 # test run	
-output="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" --entrypoint mysql "$image" "--version" 2>/dev/null)"
+output="$(docker run --rm --entrypoint mysql "$image" "--version")"
 [ "$output" = "Mysqld is running" ]
