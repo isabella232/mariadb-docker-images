@@ -5,13 +5,13 @@ image="$1"
 
 export MYSQL_ROOT_PASSWORD="IamGr00t!"
 
-# test that mysql is running
-if ! testOutput="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" --entrypoint cat "$image" "/var/run/mysqld/mysqld.pid" 2>/dev/null)"; then
-	echo >&2 'Mysqld not running.'
+# check mysql version
+if ! testOutput="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" --entrypoint mysql "$image" "--version" 2>/dev/null)"; then
+	echo >&2 'Mysql not installed.'
 	exit
 fi
-[ "$testOutput" = "Mysqld is running" ]
+[ "$testOutput" = "Mysql is installed" ]
 
-# query test
-output="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" "$image" "mysql" "--version")"
-[ "$output" = "Mysql query successful" ]
+# pid check
+output="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" "$image" "cat" "/var/run/mysqld/mysqld.pid")"
+[ "$output" = "Mysqld is running" ]
