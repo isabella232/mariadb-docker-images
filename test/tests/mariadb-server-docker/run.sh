@@ -34,6 +34,6 @@ mysql() {
 		"$MYSQL_DATABASE"
 }
 
-. "$dir/../../retry.sh" --tries 20 "echo 'SELECT * from host' | mysql"
+. "$dir/../../retry.sh" --tries 20 "echo 'SELECT 1' | mysql"
 
 # yay, must be OK
