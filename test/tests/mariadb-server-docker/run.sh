@@ -1,21 +1,22 @@
 #!/bin/bash
 set -eo pipefail
 
-export MYSQL_DATABASE='mysql'
-export MYSQL_USER='root'
-export MYSQL_ROOT_PASSWORD="IamGr00t!"
-
-
 dir="$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 image="$1"
 
-cname="mariadb-server-$RANDOM-$RANDOM"
+export MYSQL_ROOT_PASSWORD='TestPassw0rd!'
+export MYSQL_USER='MarDeebs' # "ERROR: 1470  String 'my cool mysql user' is too long for user name (should be no longer than 16)"
+export MYSQL_PASSWORD='MarDeebsPa$$'
+export MYSQL_DATABASE='MarDeeBee'
+
+cname="mysql-container-$RANDOM-$RANDOM"
 cid="$(
 	docker run -d \
 		-e MYSQL_ROOT_PASSWORD \
-		-e MYSQL_DATABASE \
 		-e MYSQL_USER \
+		-e MYSQL_PASSWORD \
+		-e MYSQL_DATABASE \
 		--name "$cname" \
 		"$image"
 )"
@@ -25,7 +26,7 @@ mysql() {
 	docker run --rm -i \
 		--link "$cname":mysql \
 		--entrypoint mysql \
-		-e MYSQL_ROOT_PASSWORD="$MYSQL_ROOT_PASSWORD"
+		-e MYSQL_PWD="$MYSQL_PASSWORD" \
 		"$image" \
 		-hmysql \
 		-u"$MYSQL_USER" \

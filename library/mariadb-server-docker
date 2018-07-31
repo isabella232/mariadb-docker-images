@@ -1,11 +1,11 @@
-# this file is generated via https://github.com/mariadb-corporation/mariadb-docker-images/4eb0a4a25e178260aeb65285d75cb777f009f932/generate-stackbrew-library.sh
+# this file is generated via https://github.com/mariadb-corporation/mariadb-docker-images/673aa81ed2de91117b191d06fca578170efb50e1/generate-stackbrew-library.sh
 
 Maintainers: Tianon Gravi <admwiggin@gmail.com> (@tianon),
              Joseph Ferguson <yosifkit@gmail.com> (@yosifkit)
 GitRepo: https://github.com/mariadb-corporation/mariadb-docker-images.git
 
-Tags: 10.3.7, 10.3, 10, latest
-GitCommit: 9c407e44d78e10dbef48f5cfd450f84ab8a1702d
+Tags: 10.3.8, 10.3, 10, latest
+GitCommit: 2cde99cf04a2affa927815916e83213847c4d115
 Directory: 10.3
 
 Tags: 10.2.16, 10.2
