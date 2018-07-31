@@ -14,6 +14,8 @@ cname="mariadb-server-$RANDOM-$RANDOM"
 cid="$(
 	docker run -d \
 		-e MYSQL_ROOT_PASSWORD \
+		-e MYSQL_DATABASE \
+		-e MYSQL_USER \
 		--name "$cname" \
 		"$image"
 )"
