@@ -1,17 +1,37 @@
 #!/bin/bash
 set -eo pipefail
 
-image="$1"
-
+export MYSQL_DATABASE='mysql'
+export MYSQL_USER='root'
 export MYSQL_ROOT_PASSWORD="IamGr00t!"
 
-# # verify mysql client is installed
-# if ! testOutput="$(docker run --rm -e "MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD" --entrypoint mysql "$image" "--version" 2>/dev/null)"; then
-# 	echo >&2 'Mysql not installed.'
-# 	exit
-# fi
-# [ "$testOutput" = "Mysql is installed" ]
 
-# test run	
-output="$(docker run --rm --entrypoint mysql "$image" "--version")"
-[ "$output" = "Mysqld is running" ]
+dir="$(dirname "$(readlink -f "$BASH_SOURCE")")"
+
+image="$1"
+
+cname="mariadb-server-$RANDOM-$RANDOM"
+cid="$(
+	docker run -d \
+		-e MYSQL_ROOT_PASSWORD \
+		--name "$cname" \
+		"$image"
+)"
+trap "docker rm -vf $cid > /dev/null" EXIT
+
+mysql() {
+	docker run --rm -i \
+		--link "$cname":mysql \
+		--entrypoint mysql \
+		-e MYSQL_ROOT_PASSWORD="$MYSQL_ROOT_PASSWORD"
+		"$image" \
+		-hmysql \
+		-u"$MYSQL_USER" \
+		--silent \
+		"$@" \
+		"$MYSQL_DATABASE"
+}
+
+. "$dir/../../retry.sh" --tries 20 "echo 'SELECT * from host' | mysql"
+
+# yay, must be OK
