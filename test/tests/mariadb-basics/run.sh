@@ -5,10 +5,10 @@ dir="$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 image="$1"
 
-export MARIADB_ROOT_PASSWORD='TestPassw0rd!'
-export MARIADB_USER='MarDeebs' # "ERROR: 1470  String 'my cool mysql user' is too long for user name (should be no longer than 16)"
-export MARIADB_PASSWORD='MarDeebsPa$$'
-export MARIADB_DATABASE='MarDeeBee'
+export MARIADB_ROOT_PASSWORD='this is an example test password'
+export MARIADB_USER='0123456789012345'
+export MARIADB_PASSWORD='my cool mariadb password'
+export MARIADB_DATABASE='my cool mariadb database'
 
 cname="mariadb-container-$RANDOM-$RANDOM"
 cid="$(
@@ -42,4 +42,13 @@ esac
 
 . "$dir/../../retry.sh" --tries 20 "echo 'SELECT 1' | mysql"
 
-# yay, must be OK
+echo 'CREATE TABLE test (a INT, b INT, c VARCHAR(255))' | mysql
+[ "$(echo 'SELECT COUNT(*) FROM test' | mysql)" = 0 ]
+echo 'INSERT INTO test VALUES (1, 2, "hello")' | mysql
+[ "$(echo 'SELECT COUNT(*) FROM test' | mysql)" = 1 ]
+echo 'INSERT INTO test VALUES (2, 3, "goodbye!")' | mysql
+[ "$(echo 'SELECT COUNT(*) FROM test' | mysql)" = 2 ]
+echo 'DELETE FROM test WHERE a = 1' | mysql
+[ "$(echo 'SELECT COUNT(*) FROM test' | mysql)" = 1 ]
+[ "$(echo 'SELECT c FROM test' | mysql)" = 'goodbye!' ]
+echo 'DROP TABLE test' | mysql
