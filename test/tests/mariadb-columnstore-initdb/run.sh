@@ -5,10 +5,16 @@ dir="$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
 image="$1"
 
-export MARIADB_ROOT_PASSWORD='TestPassw0rd!'
-export MARIADB_USER='MarDeebs' # "ERROR: 1470  String 'my cool mysql user' is too long for user name (should be no longer than 16)"
-export MARIADB_PASSWORD='MarDeebsPa$$'
-export MARIADB_DATABASE='MarDeeBee'
+serverImage="$("$dir/../image-name.sh" librarytest/mariadb-columnstore-initdb "$image")"
+"$dir/../docker-build.sh" "$dir" "$serverImage" <<EOD
+FROM $image
+COPY dir/initdb.sql /docker-entrypoint-initdb.d/
+EOD
+
+export MARIADB_ROOT_PASSWORD='this is an example test password'
+export MARIADB_USER='0123456789012345' # "ERROR: 1470  String 'my cool mysql user' is too long for user name (should be no longer than 16)"
+export MARIADB_PASSWORD='my cool mariadb password'
+export MARIADB_DATABASE='my cool mariadb database'
 
 cname="mariadb-container-$RANDOM-$RANDOM"
 cid="$(
@@ -18,7 +24,7 @@ cid="$(
 		-e MARIADB_PASSWORD \
 		-e MARIADB_DATABASE \
 		--name "$cname" \
-		"$image"
+		"$serverImage"
 )"
 trap "docker rm -vf $cid > /dev/null" EXIT
 
@@ -42,4 +48,9 @@ esac
 
 . "$dir/../../retry.sh" --tries 20 "echo 'SELECT 1' | mysql"
 
-# yay, must be OK
+# check initdb scripts ran
+[ "$(echo 'SELECT COUNT(*) FROM test' | mysql)" = 1 ]
+[ "$(echo 'SELECT c FROM test' | mysql)" = 'goodbye!' ]
+
+# check columnstore is logging
+[ "$(docker exec -i $cname wc -l /var/log/mariadb/columnstore/info.log | cut -d ' ' -f 1)" -gt 0 ]
