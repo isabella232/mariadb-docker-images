@@ -43,7 +43,7 @@ mysql() {
 
 # if this is columnstore then mysqld will start before cs is fully active so wait
 case "$image" in
-	*columnstore*) docker exec -i $cname /usr/sbin/wait_for_columnstore_active -v -p"$MARIADB_ROOT_PASSWORD";;
+	*columnstore*) docker exec -i $cname /usr/sbin/wait_for_columnstore_active -v -p "$MARIADB_ROOT_PASSWORD";;
 esac
 
 . "$dir/../../retry.sh" --tries 20 "echo 'SELECT 1' | mysql"
