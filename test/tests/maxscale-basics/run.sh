@@ -13,9 +13,9 @@ cid="$(
 )"
 trap "docker rm -vf $cid > /dev/null" EXIT
 
-. "$dir/../../retry.sh" --tries 20 "docker exec -it $cname maxadmin show services"
+. "$dir/../../retry.sh" --tries 20 "docker exec -it $cname maxctrl show maxscale"
 
-docker exec -it $cname maxadmin show services |  grep "State:[[:space:]]*Started"
+docker exec -it $cname maxctrl list commands |  grep "qc_sqlite"
 [ $? = 0 ]
-docker exec -it $cname maxadmin show sessions |  grep "State:[[:space:]]*Session ready for routing"
+docker exec -it $cname maxctrl list users |  grep "admin"
 [ $? = 0 ]
